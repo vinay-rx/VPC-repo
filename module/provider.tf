@@ -24,8 +24,7 @@ terraform {
 }
 
 provider "aws" {
-     version = "~> 4.0"
-     region = "us-east-1"
+     region = var.region
 }
 
 # provider "port" {
