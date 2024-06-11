@@ -35,7 +35,7 @@ jobs:
         aws-region: ${{ github.event.inputs.region }}
 
     - name: Change directory to terraform
-      run: cd VPC-repo/module
+      run: cd ../../module
 
     - name: Terraform Init
       run: terraform init
