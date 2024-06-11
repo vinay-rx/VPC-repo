@@ -48,6 +48,10 @@ jobs:
                        -backend=true
       working-directory: module
 
+    - name: Terraform plan
+      run: terraform plan
+      working-directory: module
+
     - name: Terraform Apply
       run: terraform apply -auto-approve
       working-directory: module
