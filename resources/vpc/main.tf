@@ -1,32 +1,32 @@
-# locals {
-#   # Create list of route table ids
-#   private_rt_ids = [
-#     for key, value in aws_route_table.private_rt : value.id
-#   ]
-#   public_rt_ids = [
-#     aws_route_table.public_rt.id
-#   ]
-#   route_tables = [
-#     for key, value in concat(local.private_rt_ids, local.public_rt_ids) : {
-#       key   = key
-#       rt_id = value
-#     }
-#   ]
+locals {
+  # Create list of route table ids
+  # private_rt_ids = [
+  #   for key, value in aws_route_table.private_rt : value.id
+  # ]
+  # public_rt_ids = [
+  #   aws_route_table.public_rt.id
+  # ]
+  # route_tables = [
+  #   for key, value in concat(local.private_rt_ids, local.public_rt_ids) : {
+  #     key   = key
+  #     rt_id = value
+  #   }
+  # ]
 
-#   any_port     = 0
-#   https_port   = "443"
-#   any_protocol = "-1"
-#   tcp_protocol = "tcp"
-#   all_ips      = ["0.0.0.0/0"]
+  any_port     = 0
+  https_port   = "443"
+  any_protocol = "-1"
+  tcp_protocol = "tcp"
+  all_ips      = ["0.0.0.0/0"]
 
-#   common_tags = tomap({
-#     "Env"=var.env,
-#     "VPC"=var.vpc_name,
-#     "Project"=var.project,
-#     "ManagedBy"="Terraform"
-#     "Customer"="Gwinnett"
-#   })
-# }
+  common_tags = tomap({
+    "Env"=var.env,
+    "VPC"=var.vpc_name,
+    "Project"=var.project,
+    "ManagedBy"="Terraform"
+    "Customer"="Test"
+  })
+}
 
 # Get Current Region
 data "aws_region" "current" {}
