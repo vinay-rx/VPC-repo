@@ -36,7 +36,6 @@ jobs:
 
     - name: Change directory to module
       run: cd module
-      working-directory: module
 
     - name: Terraform Init
       run: terraform init
