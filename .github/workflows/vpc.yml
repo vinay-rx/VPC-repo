@@ -1,4 +1,4 @@
-name: Create VPC Infrastructure
+name: Create VPC Infrastructure with Terraform
 
 on:
   workflow_dispatch:
@@ -24,6 +24,9 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v2
       with:
@@ -31,9 +34,12 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ${{ github.event.inputs.region }}
 
-    - name: Create VPC
-      id: create_vpc
-      run: |
-        VPC_ID=$(aws ec2 create-vpc --cidr-block ${{ github.event.inputs.cidr_block }} --query 'Vpc.VpcId' --output text)
-        aws ec2 create-tags --resources $VPC_ID --tags Key=Name,Value=${{ github.event.inputs.vpc_name }}
-        echo "VPC_ID=$VPC_ID" >> $GITHUB_ENV
+    - name: Terraform Init
+      run: terraform init
+
+    - name: Terraform Apply
+      run: terraform apply -auto-approve
+      env:
+        VPC_NAME: ${{ github.event.inputs.vpc_name }}
+        CIDR_BLOCK: ${{ github.event.inputs.cidr_block }}
+        AWS_REGION: ${{ github.event.inputs.region }}
