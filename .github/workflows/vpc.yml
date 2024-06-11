@@ -38,14 +38,7 @@ jobs:
       run: cd module
 
     - name: Terraform Init
-      run: |
-        terraform init -backend-config="bucket=test-port-788489449561-tf-state" \
-                       -backend-config="key=test/us-east-1/terraform.tfstate" \
-                       -backend-config="region=us-east-1" \
-                       -backend-config="dynamodb_table=test-port-788489449561-tf-lock" \
-                       -backend-config="encrypt=true" \
-                       -force-copy \
-                       -backend=true
+      run: terraform init
       working-directory: module
 
     - name: Terraform plan
