@@ -45,8 +45,7 @@ jobs:
       run: |
         terraform plan -var="env=${{ github.event.inputs.env }}" \
                         -var="vpc_cidr=${{ github.event.inputs.vpc_cidr }}" \
-                        -var="region=${{ github.event.inputs.region }}" \
-                        -auto-approve
+                        -var="region=${{ github.event.inputs.region }}"
       working-directory: module
 
     - name: Terraform Apply
