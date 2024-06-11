@@ -10,9 +10,9 @@ variable "vpc_cidr" {
   type = string
 }
 
-variable "az_list" {
-  type = list
-}
+# variable "az_list" {
+#   type = list
+# }
 
 # variable "vpce_interfaces" {
 #   type    = list
@@ -24,10 +24,10 @@ variable "az_list" {
 #   default = ["s3", "dynamodb"]
 # }
 
-variable "single_nat_gw" {
-  type    = string
-  default = "false"
-}
+# variable "single_nat_gw" {
+#   type    = string
+#   default = "false"
+# }
 
 # variable "magento_allow_ssh_ip" {
 #   type = list(string)
