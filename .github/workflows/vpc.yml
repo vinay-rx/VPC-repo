@@ -3,8 +3,8 @@ name: Create VPC Infrastructure with Terraform
 on:
   workflow_dispatch:
     inputs:
-      env:
-        description: 'env'
+      vpc_name:
+        description: 'VPC Name'
         required: true
         type: string
       vpc_cidr:
@@ -43,14 +43,14 @@ jobs:
 
     - name: Terraform Plan
       run: |
-        terraform plan -var="env=${{ github.event.inputs.env }}" \
+        terraform plan -var="vpc_name=${{ github.event.inputs.vpc_name }}" \
                         -var="vpc_cidr=${{ github.event.inputs.vpc_cidr }}" \
                         -var="region=${{ github.event.inputs.region }}"
       working-directory: module
 
     - name: Terraform Apply
       run: |
-        terraform apply -var="env=${{ github.event.inputs.env }}" \
+        terraform apply -var="vpc_name=${{ github.event.inputs.vpc_name }}" \
                         -var="vpc_cidr=${{ github.event.inputs.vpc_cidr }}" \
                         -var="region=${{ github.event.inputs.region }}" \
                         -auto-approve
