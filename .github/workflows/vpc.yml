@@ -24,6 +24,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Debug port_context
+      run: echo "${{ inputs.port_context }}"
+      
     - name: Log starting of VPC Infra creation 
       uses: port-labs/port-github-action@v1
       with:
