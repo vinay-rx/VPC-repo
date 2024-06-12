@@ -36,7 +36,7 @@ jobs:
         clientId: ${{ secrets.PORT_CLIENT_ID }}
         clientSecret: ${{ secrets.PORT_CLIENT_SECRET }}
         operation: PATCH_RUN
-        runId: ${{ fromJson(inputs.port_context).runId }}
+        runId: ${{ fromJson(inputs.port_context).run_Id }}
         logMessage: |
             About to create vpc infra creation ${{ github.event.inputs.vpc_name }} .. ⛴️
 
@@ -80,7 +80,7 @@ jobs:
         clientId: ${{ secrets.PORT_CLIENT_ID }}
         clientSecret: ${{ secrets.PORT_CLIENT_SECRET }}
         operation: PATCH_RUN
-        runId: ${{ fromJson(inputs.port_context).rund_id }}
+        runId: ${{ fromJson(inputs.port_context).run_id }}
         logMessage: |
             VPC Infra created successfully ✅
 
@@ -91,7 +91,7 @@ jobs:
         clientSecret: ${{ secrets.PORT_CLIENT_SECRET }}
         baseUrl: https://api.getport.io
         operation: PATCH_RUN
-        runId: ${{ fromJson(inputs.port_context).rund_id }}
+        runId: ${{ fromJson(inputs.port_context).run_id }}
         logMessage: "Upserting created VPC Infra to Port ... "
 
     - name: UPSERT VPC Entity
@@ -112,7 +112,7 @@ jobs:
         clientSecret: ${{ secrets.PORT_CLIENT_SECRET }}
         baseUrl: https://api.getport.io
         operation: UPSERT
-        runId: ${{ fromJson(inputs.port_context).rund_id }}
+        runId: ${{ fromJson(inputs.port_context).run_id }}
 
     - name: Log After Upserting Entity
       uses: port-labs/port-github-action@v1
@@ -121,5 +121,5 @@ jobs:
         clientSecret: ${{ secrets.PORT_CLIENT_SECRET }}
         baseUrl: https://api.getport.io
         operation: PATCH_RUN
-        runId: ${{ fromJson(inputs.port_context).rund_id }}
+        runId: ${{ fromJson(inputs.port_context).run_id }}
         logMessage: "Entity upserting was successful ✅"
