@@ -15,6 +15,9 @@ on:
         description: 'AWS Region'
         required: true
         type: string
+      port_context:
+        required: true
+        type: string
 
 jobs:
   create-vpc-infrastructure:
