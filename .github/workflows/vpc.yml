@@ -84,7 +84,7 @@ jobs:
         logMessage: |
             VPC Infra created successfully ✅
 
-    - name: Report Created Instance to Port
+    - name: Report Created VPC Creation to Port
       uses: port-labs/port-github-action@v1
       with:
         clientId: ${{ secrets.PORT_CLIENT_ID }}
@@ -104,9 +104,7 @@ jobs:
           {
             "vpc_id": "${{ env.vpc_id }}",
             "vpc_cidr": "${{ env.vpc_cidr }}",
-            "region": "${{ env.region }}",
-            "public_subnet_ids": ${{ env.public_subnet_ids }},
-            "route_table_ids": ${{ env.route_table_ids }}
+            "region": "${{ env.region }}"
           }
         clientId: ${{ secrets.PORT_CLIENT_ID }}
         clientSecret: ${{ secrets.PORT_CLIENT_SECRET }}
