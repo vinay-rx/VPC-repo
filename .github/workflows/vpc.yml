@@ -17,7 +17,7 @@ on:
         type: string
       port_context:
         required: true
-        type: string
+        description: includes blueprint, run ID, and entity identifier from Port.
 
 jobs:
   create-vpc-infrastructure:
