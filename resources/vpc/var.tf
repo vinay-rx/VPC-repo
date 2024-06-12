@@ -10,9 +10,9 @@ variable "vpc_cidr" {
   type = string
 }
 
-# variable "az_list" {
-#   type = list
-# }
+variable "az_list" {
+  type = list
+}
 
 # variable "vpce_interfaces" {
 #   type    = list

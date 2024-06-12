@@ -51,17 +51,17 @@ resource "aws_vpc" "vpc" {
 # # TODO: Enable VPC FLow Logs
 
 # # Internet Gateway
-# resource "aws_internet_gateway" "igw" {
-#   vpc_id = aws_vpc.vpc.id
+resource "aws_internet_gateway" "igw" {
+  vpc_id = aws_vpc.vpc.id
 
-#   tags = merge(
-#     local.common_tags,
-#     tomap({
-#       "Name"="${var.vpc_name}_igw",
-#       "Project"=var.project
-# })
-#   )
-# }
+  tags = merge(
+    local.common_tags,
+    tomap({
+      "Name"="${var.vpc_name}_igw",
+      "Project"=var.project
+})
+  )
+}
 
 # # NAT Gateways
 # resource "aws_eip" "nat_gw" {
@@ -90,46 +90,46 @@ resource "aws_vpc" "vpc" {
 # }
 
 # # Public Subnets
-# resource "aws_route_table" "public_rt" {
-#   vpc_id = aws_vpc.vpc.id
+resource "aws_route_table" "public_rt" {
+  vpc_id = aws_vpc.vpc.id
 
-#   route {
-#     cidr_block = "0.0.0.0/0"
-#     gateway_id = aws_internet_gateway.igw.id
-#   }
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.igw.id
+  }
 
-#   tags = merge(
-#     local.common_tags,
-#     tomap({
-#       "Name"="${var.vpc_name}_public_rt",
-#       "Tier"="Public",
-#           "Project"=var.project,
-# })
-#   )
-# }
+  tags = merge(
+    local.common_tags,
+    tomap({
+      "Name"="${var.vpc_name}_public_rt",
+      "Tier"="Public",
+          "Project"=var.project,
+})
+  )
+}
 
-# resource "aws_subnet" "public_subnet" {
-#   count                   = length(var.az_list)
-#   vpc_id                  = aws_vpc.vpc.id
-#   cidr_block              = cidrsubnet(var.vpc_cidr, 4, count.index)
-#   map_public_ip_on_launch = true
-#   availability_zone       = var.az_list[count.index]
+resource "aws_subnet" "public_subnet" {
+  count                   = length(var.az_list)
+  vpc_id                  = aws_vpc.vpc.id
+  cidr_block              = cidrsubnet(var.vpc_cidr, 4, count.index)
+  map_public_ip_on_launch = true
+  availability_zone       = var.az_list[count.index]
 
-#   tags = merge(
-#     local.common_tags,
-#     tomap({
-#       "Name"="${var.vpc_name}_public_subnet_${count.index + 1}",
-#       "Tier"="Public",
-#           "Project"=var.project,
-# })
-#   )
-# }
+  tags = merge(
+    local.common_tags,
+    tomap({
+      "Name"="${var.vpc_name}_public_subnet_${count.index + 1}",
+      "Tier"="Public",
+          "Project"=var.project,
+})
+  )
+}
 
-# resource "aws_route_table_association" "public_rt_assoc" {
-#   count          = length(aws_subnet.public_subnet)
-#   subnet_id      = aws_subnet.public_subnet.*.id[count.index]
-#   route_table_id = aws_route_table.public_rt.id
-# }
+resource "aws_route_table_association" "public_rt_assoc" {
+  count          = length(aws_subnet.public_subnet)
+  subnet_id      = aws_subnet.public_subnet.*.id[count.index]
+  route_table_id = aws_route_table.public_rt.id
+}
 
 # # Private Subnets
 # resource "aws_route_table" "private_rt" {
