@@ -5,7 +5,7 @@ module "vpc" {
   project = "${local.project}"
   vpc_name = "${local.env}-${var.vpc_name}"
   vpc_cidr = var.vpc_cidr
-  az_list = ["us-east-1a", "us-east-1b"]
+  az_list = ["us-east-1a"]
   #single_nat_gw = true
   common_tags = local.common_tags
 }
@@ -26,7 +26,7 @@ module "ec2" {
   instance_type = var.instance_type
   disk_size     = "30"
   vpc_id        = module.vpc.vpc_id
-  subnet_id =  module.vpc.public_subnet_ids[0]
+  subnet_id =  module.vpc.public_subnet_ids
   #subnet_id = ${data.aws_subnet.subnet.*.id}
   common_tags     = local.common_tags
   security_groups = [module.ec2_sg.sg_id, module.comm_sg.sg_id]

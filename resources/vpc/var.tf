@@ -11,7 +11,7 @@ variable "vpc_cidr" {
 }
 
 variable "az_list" {
-  type = list
+  type = list(string)
 }
 
 # variable "vpce_interfaces" {
