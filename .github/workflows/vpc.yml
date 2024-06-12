@@ -24,7 +24,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Inform starting of action
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Log starting of VPC Infra creation 
       uses: port-labs/port-github-action@v1
       with:
         clientId: ${{ secrets.PORT_CLIENT_ID }}
@@ -32,9 +35,7 @@ jobs:
         operation: PATCH_RUN
         runId: ${{ fromJson(inputs.port_context).rund_id }}
         logMessage: |
-          Starting a GitHub worklfow to tag the AWS resource: ${{fromJson(inputs.port_context).entity.identifier}} ... ⛴️
-    - name: Checkout
-      uses: actions/checkout@v2
+          About to create vpc infra creation ${{ github.event.inputs.vpc_name }} .. ⛴️
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
