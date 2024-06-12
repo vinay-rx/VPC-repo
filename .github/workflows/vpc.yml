@@ -30,7 +30,7 @@ jobs:
         clientId: ${{ secrets.PORT_CLIENT_ID }}
         clientSecret: ${{ secrets.PORT_CLIENT_SECRET }}
         operation: PATCH_RUN
-        runId: ${{ fromJson(inputs.port_context).runId }}
+        runId: ${{ fromJson(inputs.port_context).rund_id }}
         logMessage: |
           Starting a GitHub worklfow to tag the AWS resource: ${{fromJson(inputs.port_context).entity.identifier}} ... ⛴️
     - name: Checkout
