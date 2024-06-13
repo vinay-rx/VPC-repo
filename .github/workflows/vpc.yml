@@ -80,9 +80,6 @@ jobs:
         echo "vpc_id=$(terraform output -raw vpc_id)" >> $GITHUB_ENV
         echo "vpc_cidr"=$(terraform output -raw vpc_cidr)" >> $GITHUB_ENV
         echo "region=$(terraform output -raw region)" >> $GITHUB_ENV
-        echo "public_subnet_ids=$(terraform output -json public_subnet_ids | jq -c .)" >> $GITHUB_ENV
-        echo "route_table_ids=$(terraform output -json route_table_ids | jq -c .)" >> $GITHUB_ENV
-        echo "internet_gateway_id=$(terraform output -raw internet_gateway_id)" >> $GITHUB_ENV
 
     - name: Create a log message
       uses: port-labs/port-github-action@v1
@@ -114,10 +111,7 @@ jobs:
           {
             "vpc_id": "${{ env.vpc_id }}",
             "vpc_cidr": "${{ env.vpc_cidr }}",
-            "region": "${{ env.region }}",
-            "public_subnet_ids": ${{ env.public_subnet_ids }},
-            "route_table_ids": ${{ env.route_table_ids }},
-            "internet_gateway_id": "${{ env.internet_gateway_id }}"
+            "region": "${{ env.region }}"
           }
         clientId: ${{ secrets.PORT_CLIENT_ID }}
         clientSecret: ${{ secrets.PORT_CLIENT_SECRET }}
