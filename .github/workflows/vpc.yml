@@ -77,10 +77,10 @@ jobs:
     - name: Set Outputs
       id: set_outputs
       run: |
-        cd module
         echo "vpc_id=$(terraform output -raw vpc_id)" >> $GITHUB_ENV
-        echo "vpc_cidr"=$(terraform output -raw vpc_cidr)" >> $GITHUB_ENV
+        echo "vpc_cidr=$(terraform output -raw vpc_cidr)" >> $GITHUB_ENV
         echo "region=$(terraform output -raw region)" >> $GITHUB_ENV
+      working-directory: module
 
     - name: Create a log message
       uses: port-labs/port-github-action@v1
