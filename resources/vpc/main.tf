@@ -111,14 +111,14 @@ resource "aws_route_table" "public_rt" {
 resource "aws_subnet" "public_subnet" {
   count                   = length(var.az_list)
   vpc_id                  = aws_vpc.vpc.id
-  cidr_block              = var.vpc_cidr
+  cidr_block              = cidrsubnet(var.vpc_cidr, 4, count.index)
   map_public_ip_on_launch = true
   availability_zone       = var.az_list[count.index]
 
   tags = merge(
     local.common_tags,
     tomap({
-      "Name"="${var.vpc_name}_public_subnet",
+      "Name"="${var.vpc_name}_public_subnet_${count.index + 1}",
       "Tier"="Public",
           "Project"=var.project,
 })

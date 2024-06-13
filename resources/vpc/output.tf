@@ -6,6 +6,6 @@ output "vpc_name" {
     value = var.vpc_name
 }
 
-output "public_subnet_ids" {
-    value = [for subnet in aws_subnet.public_subnet : subnet.id]
+output "pulic_subnet_ids" {
+    value = aws_subnet.public_subnet.*.id
 }
