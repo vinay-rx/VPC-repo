@@ -15,6 +15,20 @@ on:
         description: 'AWS Region'
         required: true
         type: string
+      ec2_name:
+        description: EC2 name
+        required: true
+        default: 'App Server'
+        type: string
+      ec2_instance_type:
+        description: EC2 instance type
+        required: false
+        default: "t3.micro"
+        type: string
+      pem_key_name:
+        description: EC2 pem key
+        required: true
+        type: string
       port_context:
         required: true
         type: string
@@ -71,6 +85,15 @@ jobs:
                         -var="vpc_name=${{ github.event.inputs.vpc_name }}" \
                         -var="vpc_cidr=${{ github.event.inputs.vpc_cidr }}" \
                         -var="region=${{ github.event.inputs.region }}" \
+                        -auto-approve
+      working-directory: module
+
+    - name: Terraform Apply
+      run: |
+        terraform apply -target="module.ec2" -target="module.ec2-sg" -target="module.comm-sg" \
+                        -var="vpc_name=${{ github.event.inputs.ec2_name }}" \
+                        -var="vpc_cidr=${{ github.event.inputs.ec2_instance_type }}" \
+                        -var="region=${{ github.event.inputs.pem_key_name }}" \
                         -auto-approve
       working-directory: module
 
