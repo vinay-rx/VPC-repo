@@ -15,14 +15,30 @@ on:
         description: 'AWS Region'
         required: true
         type: string
+      port_context:
+        required: true
+        type: string
 
 jobs:
   create-vpc-infrastructure:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Debug port_context
+      run: echo "${{ inputs.port_context }}"
+      
+    - name: Log starting of VPC Infra creation 
+      uses: port-labs/port-github-action@v1
+      with:
+        clientId: ${{ secrets.PORT_CLIENT_ID }}
+        clientSecret: ${{ secrets.PORT_CLIENT_SECRET }}
+        operation: PATCH_RUN
+        runId: ${{ fromJson(inputs.port_context).run_Id }}
+        logMessage: |
+            About to create vpc infra creation ${{ github.event.inputs.vpc_name }} .. ⛴️
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
@@ -43,15 +59,65 @@ jobs:
 
     - name: Terraform Plan
       run: |
-        terraform plan -target="module.vpc" -var="vpc_name=${{ github.event.inputs.vpc_name }}" \
+        terraform plan -target="module.vpc" \
+                        -var="vpc_name=${{ github.event.inputs.vpc_name }}" \
                         -var="vpc_cidr=${{ github.event.inputs.vpc_cidr }}" \
                         -var="region=${{ github.event.inputs.region }}"
       working-directory: module
 
     - name: Terraform Apply
       run: |
-        terraform apply -target="module.vpc" -var="vpc_name=${{ github.event.inputs.vpc_name }}" \
+        terraform apply -target="module.vpc" \
+                        -var="vpc_name=${{ github.event.inputs.vpc_name }}" \
                         -var="vpc_cidr=${{ github.event.inputs.vpc_cidr }}" \
                         -var="region=${{ github.event.inputs.region }}" \
                         -auto-approve
       working-directory: module
+
+    - name: Create a log message
+      uses: port-labs/port-github-action@v1
+      with:
+        clientId: ${{ secrets.PORT_CLIENT_ID }}
+        clientSecret: ${{ secrets.PORT_CLIENT_SECRET }}
+        operation: PATCH_RUN
+        runId: ${{ fromJson(inputs.port_context).run_id }}
+        logMessage: |
+            VPC Infra created successfully ✅
+
+    - name: Report Created VPC Creation to Port
+      uses: port-labs/port-github-action@v1
+      with:
+        clientId: ${{ secrets.PORT_CLIENT_ID }}
+        clientSecret: ${{ secrets.PORT_CLIENT_SECRET }}
+        baseUrl: https://api.getport.io
+        operation: PATCH_RUN
+        runId: ${{ fromJson(inputs.port_context).run_id }}
+        logMessage: "Upserting created VPC Infra to Port ... "
+
+    - name: UPSERT VPC Entity
+      uses: port-labs/port-github-action@v1
+      with:
+        identifier: "${{ env.vpc_id }}"
+        title: "${{ github.event.inputs.vpc_name }}"
+        blueprint: ${{ fromJson(inputs.port_context).blueprint }}
+        properties: |-
+          {
+            "vpc_id": "${{ env.vpc_id }}",
+            "vpc_cidr": "${{ env.vpc_cidr }}",
+            "region": "${{ env.region }}"
+          }
+        clientId: ${{ secrets.PORT_CLIENT_ID }}
+        clientSecret: ${{ secrets.PORT_CLIENT_SECRET }}
+        baseUrl: https://api.getport.io
+        operation: UPSERT
+        runId: ${{ fromJson(inputs.port_context).run_id }}
+
+    - name: Log After Upserting Entity
+      uses: port-labs/port-github-action@v1
+      with:
+        clientId: ${{ secrets.PORT_CLIENT_ID }}
+        clientSecret: ${{ secrets.PORT_CLIENT_SECRET }}
+        baseUrl: https://api.getport.io
+        operation: PATCH_RUN
+        runId: ${{ fromJson(inputs.port_context).run_id }}
+        logMessage: "Entity upserting was successful ✅"
