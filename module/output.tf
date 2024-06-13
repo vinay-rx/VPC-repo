@@ -6,9 +6,9 @@ output "vpc_id" {
   value = module.vpc.vpc_id
 }
 output "region" {   value = var.region } 
-output "public_subnet_ids" {   value = module.public_subnet_ids.public[*].id } 
-output "route_table_ids" {   value = [module.route_table_id.public.id] } 
+output "public_subnet_ids" {   value = [module.vpc.public_subnet.*.ids] } 
+output "route_table_ids" {   value = [module.vpc.route_table_id.rt_id] } 
 output "internet_gateway_id" {
-  value = module.internet_gateway_id.vpc_id
+  value = module.vpc.igw.id
 }
 
